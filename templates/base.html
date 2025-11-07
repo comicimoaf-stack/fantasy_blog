@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Blog de Fantasía{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<nav class="navbar">
+<div class="container">
+<a class="brand" href="{% url 'home' %}">Blog de Fantasía</a>
+<ul class="navlinks">
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="{% url 'about' %}">About</a></li>
+</ul>
+<div class="auth">
+{% if user.is_authenticated %}
+<span>Hola, {{ user.username }}</span>
+
+<!-- Botón nuevo post -->
+<a href="{% url 'create_post' %}" style="margin-left:10px;">Nuevo Post</a>
+
+<!-- Logout (POST) -->
+<form action="{% url 'logout' %}" method="post" style="display:inline;">
+  {% csrf_token %}
+  <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">Cerrar sesión</button>
+</form>
+
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+</div>
+</div>
+</nav>
+
+<main class="container">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+<div class="container">© {{ now|date:'Y' }} Blog de Fantasía</div>
+</footer>
+</body>
+</html>
